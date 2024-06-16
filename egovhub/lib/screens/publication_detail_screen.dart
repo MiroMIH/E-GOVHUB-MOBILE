@@ -34,7 +34,10 @@ class _PublicationDetailScreenState extends State<PublicationDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Publication Details'),
+        title: Text(
+          'Publication Details',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),

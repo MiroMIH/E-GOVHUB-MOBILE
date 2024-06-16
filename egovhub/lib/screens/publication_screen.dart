@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../api_service.dart';
 import 'profile_screen.dart';
 import 'publication_detail_screen.dart';
+import '../appGlobals.dart'; // Import AppGlobals
 
 class Publication {
   final String id;
@@ -78,8 +79,12 @@ class _PublicationScreenState extends State<PublicationScreen> {
     try {
       final List<Map<String, dynamic>> jsonData =
           await _apiService.fetchAllPublications();
+      String? userCommune = AppGlobals().commun;
       setState(() {
-        publications = jsonData.map((item) => _mapPublication(item)).toList();
+        publications = jsonData
+            .map((item) => _mapPublication(item))
+            .where((publication) => publication.commune == userCommune)
+            .toList();
       });
     } catch (error) {
       print('Error fetching publications: $error');
@@ -130,7 +135,7 @@ class _PublicationScreenState extends State<PublicationScreen> {
   }
 
   String _concatenateBaseUrl(String relativePath) {
-    const String baseUrl = 'http://192.168.1.34:5001';
+    const String baseUrl = 'http://192.168.1.33:5001';
     return '$baseUrl/$relativePath';
   }
 
@@ -138,10 +143,14 @@ class _PublicationScreenState extends State<PublicationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Publications'),
+        title: Text(
+          'Publications',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Color(0xFF072923),
         actions: [
           IconButton(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.person, color: Colors.white), // Profile icon
             onPressed: () {
               Navigator.push(
                 context,
@@ -151,11 +160,13 @@ class _PublicationScreenState extends State<PublicationScreen> {
           ),
         ],
       ),
-      body: publications != null
+      body: publications.isNotEmpty
           ? ListView.builder(
               itemCount: publications.length,
               itemBuilder: (context, index) {
                 final publication = publications[index];
+                // Inside the ListView.builder's itemBuilder
+
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -166,12 +177,12 @@ class _PublicationScreenState extends State<PublicationScreen> {
                     );
                   },
                   child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    margin: EdgeInsets.symmetric(vertical: 10),
                     padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 0.5, // Thin border
+                      border: Border(
+                        top: BorderSide(color: Colors.black, width: 0.5),
+                        bottom: BorderSide(color: Colors.black, width: 0.5),
                       ),
                     ),
                     child: Column(
@@ -213,12 +224,10 @@ class _PublicationScreenState extends State<PublicationScreen> {
                         SizedBox(height: 10),
                         if (publication.photos.isNotEmpty)
                           Container(
-                            margin: EdgeInsets.only(bottom: 10), // Added margin
+                            margin: EdgeInsets.only(bottom: 10),
                             height: 200,
-                            width: double.infinity, // Occupy full width
+                            width: double.infinity,
                             decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: Colors.black, width: 0.5),
                               image: DecorationImage(
                                 image: NetworkImage(publication.photos.first),
                                 fit: BoxFit.cover,

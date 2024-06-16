@@ -14,6 +14,9 @@ class AppGlobals {
   // Token variable
   String? _token;
 
+  // Commun variable
+  String? _commun;
+
   // Getter for user ID
   String? get userId => _userId;
 
@@ -28,5 +31,13 @@ class AppGlobals {
   // Setter for token
   void setToken(String? token) {
     _token = token;
+  }
+
+  // Getter for commun
+  String? get commun => _commun;
+
+  // Setter for commun
+  void setCommun(String? commun) {
+    _commun = commun;
   }
 }

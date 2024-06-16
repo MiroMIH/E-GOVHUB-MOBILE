@@ -9,7 +9,7 @@ import 'appGlobals.dart';
 
 class ApiService {
   static const String baseUrl =
-      'http://192.168.1.34:5001'; // Updated URL with 'http://'
+      'http://192.168.1.33:5001'; // Updated URL with 'http://'
 
   Future<Map<String, dynamic>> fetchData() async {
     final response = await http.get(Uri.parse(baseUrl));
@@ -56,14 +56,21 @@ class ApiService {
 
       // Extract user ID from the decoded token
       String? userId = decodedToken['userId'];
-      print('Extracted User ID : $userId');
+      print('Extracted User ID: $userId');
       AppGlobals().setUserId(userId);
       String? test = AppGlobals().userId;
-      print('test  User ID : $test');
+      print('Test User ID: $test');
+
+      // Extract commune from the decoded token
+      String? commune = decodedToken['commune'];
+      print('Extracted Commune: $commune');
+      AppGlobals().setCommun(commune);
+      String? communeTest = AppGlobals().commun;
+      print('Test Commune: $communeTest');
 
       AppGlobals().setToken(jsonData['token']);
-      String? tokentest = AppGlobals().token;
-      print('test  Token test ID : $tokentest');
+      String? tokenTest = AppGlobals().token;
+      print('Test Token: $tokenTest');
 
       // Set the user ID into the global state
       Provider.of<UserProvider>(context, listen: false).setUserId(userId);

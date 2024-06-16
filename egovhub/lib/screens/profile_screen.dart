@@ -33,8 +33,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
-        backgroundColor: Colors.teal,
+        title: Text(
+          'Profile',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Color(0xFF072923),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -42,32 +45,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Row(
-                children: [
-                  Text(
-                    'User Profile',
-                    style: TextStyle(
-                      fontSize: 28.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(width: 10.0),
-                  if (_userData != null) ...[
+              Text(
+                'User Profile',
+                style: TextStyle(
+                  fontSize: 28.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              SizedBox(height: 10.0),
+              if (_userData != null) ...[
+                Row(
+                  children: [
                     Chip(
                       label: Text(_userData!['role']),
-                      backgroundColor: Colors.tealAccent,
+                      backgroundColor: Colors.blueAccent,
+                      labelStyle: TextStyle(color: Colors.white),
                     ),
                     SizedBox(width: 5.0),
                     Chip(
                       label: Text(_userData!['status']),
-                      backgroundColor: Colors.tealAccent,
+                      backgroundColor: Colors.greenAccent,
+                      labelStyle: TextStyle(color: Colors.white),
                     ),
                   ],
-                ],
-              ),
-              SizedBox(height: 20.0),
-              if (_userData != null) ...[
+                ),
+                SizedBox(height: 20.0),
                 ProfileInfoItem(
                   label: 'User ID',
                   value: _userData!['_id'],
@@ -84,6 +87,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   label: 'Email',
                   value: _userData!['email'],
                   icon: Icons.email_outlined,
+                ),
+                ProfileDivider(),
+                ProfileInfoItem(
+                  label: 'Commune',
+                  value: AppGlobals().commun ?? 'Not available',
+                  icon: Icons.location_city_outlined,
                 ),
               ] else ...[
                 Text(
