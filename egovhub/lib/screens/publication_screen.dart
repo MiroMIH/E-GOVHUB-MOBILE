@@ -135,7 +135,7 @@ class _PublicationScreenState extends State<PublicationScreen> {
   }
 
   String _concatenateBaseUrl(String relativePath) {
-    const String baseUrl = 'http://192.168.1.33:5001';
+    const String baseUrl = 'https://locally-ready-bass.ngrok-free.app';
     return '$baseUrl/$relativePath';
   }
 

@@ -9,7 +9,7 @@ import 'appGlobals.dart';
 
 class ApiService {
   static const String baseUrl =
-      'http://192.168.1.33:5001'; // Updated URL with 'http://'
+      'https://locally-ready-bass.ngrok-free.app'; // Updated URL with 'http://'
 
   Future<Map<String, dynamic>> fetchData() async {
     final response = await http.get(Uri.parse(baseUrl));
@@ -200,6 +200,31 @@ class ApiService {
       return jsonData;
     } else {
       throw Exception('Failed to load user information');
+    }
+  }
+
+  Future<void> sendEmail(Map<String, dynamic> data) async {
+    try {
+      final response = await http.post(
+        Uri.parse(
+            '$baseUrl/emails'), // Update with your backend endpoint for sending emails
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization':
+              'Bearer ${AppGlobals().token}', // Include authorization token if required
+        },
+        body: jsonEncode(data),
+      );
+
+      if (response.statusCode == 200) {
+        print('Email sent successfully: $data');
+      } else {
+        throw Exception(
+            'Failed to send email. Status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error sending email: $error');
+      throw Exception('Failed to send email: $error');
     }
   }
 }

@@ -29,6 +29,98 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  void _showDialog(String title, String type) {
+    final _subjectController = TextEditingController();
+    final _contentController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            children: [
+              Icon(
+                type == 'resetPassword' ? Icons.lock_reset : Icons.lock,
+                color: Colors.teal,
+              ),
+              SizedBox(width: 10),
+              Text(title),
+            ],
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  type == 'resetPassword'
+                      ? 'Please provide the details for resetting your password.'
+                      : 'Please provide the details for changing your password.',
+                  style: TextStyle(color: Colors.black54, fontSize: 14),
+                ),
+                SizedBox(height: 10),
+                TextField(
+                  controller: _subjectController,
+                  decoration: InputDecoration(
+                    labelText: 'Subject',
+                    icon: Icon(Icons.subject),
+                  ),
+                ),
+                SizedBox(height: 10),
+                TextField(
+                  controller: _contentController,
+                  decoration: InputDecoration(
+                    labelText: 'Content',
+                    alignLabelWithHint: true,
+                    icon: Icon(Icons.content_paste),
+                  ),
+                  maxLines: 4,
+                  minLines: 2,
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              child: Text('Send'),
+              onPressed: () async {
+                final data = {
+                  'sender':
+                      _userData!['_id'], // Assuming sender is user's email
+                  'subject': _subjectController.text,
+                  'date': DateTime.now().toString(), // Example date format
+                  'content': _contentController.text,
+                  'type': type,
+                };
+
+                // Log the data being sent
+                print('Sending email with data: $data');
+                Navigator.of(context).pop(); // Close the dialog
+
+                try {
+                  await ApiService()
+                      .sendEmail(data); // Call sendEmail with data
+                  Navigator.of(context).pop(); // Close the dialog
+                } catch (error) {
+                  print('Error sending email: $error');
+                  Navigator.of(context).pop(); // Close the dialog
+
+                  // Handle error, show snackbar, etc.
+                }
+              },
+              style: ElevatedButton.styleFrom(),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,6 +185,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   label: 'Commune',
                   value: AppGlobals().commun ?? 'Not available',
                   icon: Icons.location_city_outlined,
+                ),
+                SizedBox(height: 20.0),
+                ListTile(
+                  title: Text('Change Password'),
+                  trailing: Icon(Icons.lock),
+                  onTap: () => _showDialog('Change Password', 'changePassword'),
+                ),
+                ListTile(
+                  title: Text('Change Location'),
+                  trailing: Icon(Icons.location_on),
+                  onTap: () => _showDialog('Change Location', 'changeLocation'),
                 ),
               ] else ...[
                 Text(

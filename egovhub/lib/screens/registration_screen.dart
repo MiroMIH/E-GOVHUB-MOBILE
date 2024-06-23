@@ -12,7 +12,10 @@ class RegistrationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registration'),
+        title: Text(
+          'Registration',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: RegistrationForm(),
     );
@@ -30,7 +33,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   List<Step> _steps = [
     Step(
-      title: Text('Step 1'),
+      title: Text(
+        'Step 1',
+      ),
       content: RegistrationStep1(),
     ),
     Step(
