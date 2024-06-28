@@ -188,87 +188,88 @@ class _PublicationDetailScreenState extends State<PublicationDetailScreen> {
               ),
 
             // Write Comment
-            Padding(
-              padding: EdgeInsets.only(bottom: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Write Your Comment:',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+            if (widget.publication.type != 'informative')
+              Padding(
+                padding: EdgeInsets.only(bottom: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Write Your Comment:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    controller: commentController,
-                    decoration: InputDecoration(
-                      hintText: 'Enter your comment',
-                      border: OutlineInputBorder(),
+                    SizedBox(height: 10),
+                    TextField(
+                      controller: commentController,
+                      decoration: InputDecoration(
+                        hintText: 'Enter your comment',
+                        border: OutlineInputBorder(),
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Add functionality to submit the comment
-                      String? userId = AppGlobals().userId;
-                      print('CURRENT USER ID -----------: $userId');
-                      String commentContent = commentController.text;
-                      List<String> votedOptions = [];
-                      for (int i = 0; i < selectedOptions.length; i++) {
-                        if (selectedOptions[i]) {
-                          votedOptions
-                              .add(widget.publication.participationOptions[i]);
+                    SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Add functionality to submit the comment
+                        String? userId = AppGlobals().userId;
+                        print('CURRENT USER ID -----------: $userId');
+                        String commentContent = commentController.text;
+                        List<String> votedOptions = [];
+                        for (int i = 0; i < selectedOptions.length; i++) {
+                          if (selectedOptions[i]) {
+                            votedOptions.add(
+                                widget.publication.participationOptions[i]);
+                          }
                         }
-                      }
 
-                      // Extract comments with their content, createdBy, and createdAt
-                      List<Map<String, dynamic>> comments =
-                          widget.publication.comments
-                              .map((comment) => {
-                                    'content': comment.content,
-                                    'createdBy': comment.createdBy,
-                                    'createdAt':
-                                        comment.createdAt.toIso8601String(),
-                                  })
-                              .toList();
+                        // Extract comments with their content, createdBy, and createdAt
+                        List<Map<String, dynamic>> comments =
+                            widget.publication.comments
+                                .map((comment) => {
+                                      'content': comment.content,
+                                      'createdBy': comment.createdBy,
+                                      'createdAt':
+                                          comment.createdAt.toIso8601String(),
+                                    })
+                                .toList();
 
-                      // Create JSON data with the comment, voted options, and comments
-                      Map<String, dynamic> jsonData = {
-                        'publicationId': widget.publication.id,
-                        'comment': {
-                          'content': commentContent,
-                          'createdBy':
-                              userId, // Replace CURRENT_USER_ID with the actual user ID
-                          'createdAt': DateTime.now().toIso8601String(),
-                        },
-                        'votedOptions': votedOptions,
-                      };
+                        // Create JSON data with the comment, voted options, and comments
+                        Map<String, dynamic> jsonData = {
+                          'publicationId': widget.publication.id,
+                          'comment': {
+                            'content': commentContent,
+                            'createdBy':
+                                userId, // Replace CURRENT_USER_ID with the actual user ID
+                            'createdAt': DateTime.now().toIso8601String(),
+                          },
+                          'votedOptions': votedOptions,
+                        };
 
-                      // Print the publication ID and JSON data
-                      print('Publication ID: ${widget.publication.id}');
-                      print('Submitted JSON Data: $jsonData');
+                        // Print the publication ID and JSON data
+                        print('Publication ID: ${widget.publication.id}');
+                        print('Submitted JSON Data: $jsonData');
 
-                      // Call the updatePublication method
-                      ApiService()
-                          .updatePublication(widget.publication.id, jsonData);
+                        // Call the updatePublication method
+                        ApiService()
+                            .updatePublication(widget.publication.id, jsonData);
 
-                      // Clear the text field after submitting
-                      commentController.clear();
+                        // Clear the text field after submitting
+                        commentController.clear();
 
-                      // Reset selected options
-                      setState(() {
-                        selectedOptions = List<bool>.filled(
-                            widget.publication.participationOptions.length,
-                            false);
-                      });
-                    },
-                    child: Text('Submit'),
-                  ),
-                ],
+                        // Reset selected options
+                        setState(() {
+                          selectedOptions = List<bool>.filled(
+                              widget.publication.participationOptions.length,
+                              false);
+                        });
+                      },
+                      child: Text('Submit'),
+                    ),
+                  ],
+                ),
               ),
-            ),
 
             // Participation Results
             if (widget.publication.participationResults.isNotEmpty)
@@ -336,7 +337,8 @@ class _PublicationDetailScreenState extends State<PublicationDetailScreen> {
             // Created At
 
             // Comments
-            if (widget.publication.comments.isNotEmpty)
+            if (widget.publication.comments.isNotEmpty &&
+                !widget.publication.allowAnonymousParticipation)
               Container(
                 margin: EdgeInsets.only(bottom: 20),
                 width: double.infinity,

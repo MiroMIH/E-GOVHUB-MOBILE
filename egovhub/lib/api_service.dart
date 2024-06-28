@@ -58,19 +58,23 @@ class ApiService {
       String? userId = decodedToken['userId'];
       print('Extracted User ID: $userId');
       AppGlobals().setUserId(userId);
-      String? test = AppGlobals().userId;
-      print('Test User ID: $test');
 
       // Extract commune from the decoded token
       String? commune = decodedToken['commune'];
       print('Extracted Commune: $commune');
       AppGlobals().setCommun(commune);
-      String? communeTest = AppGlobals().commun;
-      print('Test Commune: $communeTest');
+
+      // Extract status from the decoded token
+      String? status = decodedToken['status'];
+      print('Extracted Status: $status');
+      AppGlobals().setStatus(status);
+
+      // Check if the status is "suspended"
+      if (status == "suspended") {
+        throw Exception('Login failed. User account is suspended.');
+      }
 
       AppGlobals().setToken(jsonData['token']);
-      String? tokenTest = AppGlobals().token;
-      print('Test Token: $tokenTest');
 
       // Set the user ID into the global state
       Provider.of<UserProvider>(context, listen: false).setUserId(userId);

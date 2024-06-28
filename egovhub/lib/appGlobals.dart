@@ -17,6 +17,9 @@ class AppGlobals {
   // Commun variable
   String? _commun;
 
+  // Status variable
+  String? _status;
+
   // Getter for user ID
   String? get userId => _userId;
 
@@ -39,5 +42,13 @@ class AppGlobals {
   // Setter for commun
   void setCommun(String? commun) {
     _commun = commun;
+  }
+
+  // Getter for status
+  String? get status => _status;
+
+  // Setter for status
+  void setStatus(String? status) {
+    _status = status;
   }
 }
