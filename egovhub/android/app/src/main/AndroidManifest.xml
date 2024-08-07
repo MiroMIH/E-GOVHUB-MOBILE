@@ -1,9 +1,34 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Include the user permission for accessing external storage -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!-- Permission to access the camera -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <!-- Permission to access the internet -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Permission to access network state -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!-- Permission to access WiFi state -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!-- Permission to access fine location (GPS) -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!-- Permission to access coarse location (network-based) -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!-- Permission to record audio -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <!-- Permission to read contacts -->
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <!-- Permission to write contacts -->
+    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+    <!-- Permission to read phone state -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!-- Permission to wake lock -->
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <!-- Permission to receive boot completed -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
-        android:label="egovhub"
+        android:label="egov"
         android:name="${applicationName}"
         android:icon="@mipmap/egovhub_logo">
         <activity
